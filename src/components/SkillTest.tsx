@@ -11,17 +11,28 @@ import { BookOpen, Award, TrendingUp } from "lucide-react";
 interface SkillTestProps {
   onTestComplete: (result: TestResult) => void;
   onClose: () => void;
+  topic: string;
 }
 
-export const SkillTest = ({ onTestComplete, onClose }: SkillTestProps) => {
+export const SkillTest = ({ onTestComplete, onClose, topic }: SkillTestProps) => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState<number[]>([]);
   const [selectedAnswer, setSelectedAnswer] = useState<string>("");
   const [showResult, setShowResult] = useState(false);
 
-  // Randomly select 5 questions
+  // Filter and randomly select 5 questions based on topic
   const [selectedQuestions] = useState(() => {
-    const shuffled = [...testQuestions].sort(() => 0.5 - Math.random());
+    const topicKeywords = topic.toLowerCase().split(' ');
+    const relevantQuestions = testQuestions.filter(question => 
+      topicKeywords.some(keyword => 
+        question.topic.toLowerCase().includes(keyword) ||
+        question.question.toLowerCase().includes(keyword)
+      )
+    );
+    
+    // If we have relevant questions, use them; otherwise fall back to all questions
+    const questionsToUse = relevantQuestions.length >= 3 ? relevantQuestions : testQuestions;
+    const shuffled = [...questionsToUse].sort(() => 0.5 - Math.random());
     return shuffled.slice(0, 5);
   });
 

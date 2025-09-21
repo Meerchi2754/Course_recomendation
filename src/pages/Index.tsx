@@ -61,25 +61,6 @@ const Index = () => {
             Discover the perfect courses for your learning journey. Enter your topic and skill level to get personalized recommendations.
           </p>
           
-          {/* Take a Test Section */}
-          <div className="mt-8 p-6 bg-background/50 rounded-lg border">
-            <div className="flex items-center justify-center gap-2 text-primary mb-3">
-              <Brain className="w-6 h-6" />
-              <Award className="w-6 h-6" />
-            </div>
-            <h2 className="text-2xl font-semibold mb-3">Not sure where to start?</h2>
-            <p className="text-muted-foreground mb-4">
-              Take our skill assessment test to get personalized course recommendations based on your current knowledge level.
-            </p>
-            <Button 
-              onClick={() => setShowTest(true)}
-              size="lg"
-              className="font-semibold"
-            >
-              <Brain className="w-4 h-4 mr-2" />
-              Take a Test
-            </Button>
-          </div>
         </div>
       </div>
 
@@ -89,6 +70,7 @@ const Index = () => {
           <SkillTest 
             onTestComplete={handleTestComplete}
             onClose={handleTestClose}
+            topic={filters.topic}
           />
         </div>
       )}
@@ -112,6 +94,28 @@ const Index = () => {
             onFiltersChange={setFilters}
             onSearch={handleSearch}
           />
+          
+          {/* Take a Test Section - Show after topic is entered */}
+          {filters.topic && (
+            <div className="mt-6 p-6 bg-background/50 rounded-lg border">
+              <div className="flex items-center justify-center gap-2 text-primary mb-3">
+                <Brain className="w-6 h-6" />
+                <Award className="w-6 h-6" />
+              </div>
+              <h2 className="text-xl font-semibold mb-3">Test your knowledge in {filters.topic}</h2>
+              <p className="text-muted-foreground mb-4">
+                Take a quick assessment test to evaluate your current skill level in {filters.topic} and get better course recommendations.
+              </p>
+              <Button 
+                onClick={() => setShowTest(true)}
+                size="lg"
+                className="font-semibold"
+              >
+                <Brain className="w-4 h-4 mr-2" />
+                Take {filters.topic} Test
+              </Button>
+            </div>
+          )}
         </div>
       </div>
 
