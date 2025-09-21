@@ -35,10 +35,25 @@ const Index = () => {
 
   const handleTestComplete = (result: TestResult) => {
     setTestResult(result);
-    setFilters({
+    const newFilters = {
       topic: result.recommendedTopics[0] || '',
       level: result.recommendedLevel
+    };
+    setFilters(newFilters);
+    
+    // Automatically search for courses with the recommended filters
+    const filteredCourses = courses.filter(course => {
+      const topicMatch = course.topic.toLowerCase().includes(newFilters.topic.toLowerCase()) ||
+                        course.title.toLowerCase().includes(newFilters.topic.toLowerCase()) ||
+                        course.skills.some(skill => skill.toLowerCase().includes(newFilters.topic.toLowerCase()));
+      
+      const levelMatch = course.level === newFilters.level;
+      
+      return topicMatch && levelMatch;
     });
+    
+    setSearchResults(filteredCourses);
+    setHasSearched(true);
   };
 
   const handleTestClose = () => {
