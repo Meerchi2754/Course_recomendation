@@ -5,19 +5,12 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
 import { testQuestions } from "@/data/testQuestions";
-import { TestResult } from "@/types/test";
 import { BookOpen, Award, TrendingUp } from "lucide-react";
 
-interface SkillTestProps {
-  onTestComplete: (result: TestResult) => void;
-  onClose: () => void;
-  topic: string;
-}
-
-export const SkillTest = ({ onTestComplete, onClose, topic }: SkillTestProps) => {
+export const SkillTest = ({ onTestComplete, onClose, topic }) => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [selectedAnswers, setSelectedAnswers] = useState<number[]>([]);
-  const [selectedAnswer, setSelectedAnswer] = useState<string>("");
+  const [selectedAnswers, setSelectedAnswers] = useState([]);
+  const [selectedAnswer, setSelectedAnswer] = useState("");
   const [showResult, setShowResult] = useState(false);
 
   // Filter and randomly select 5 questions based on topic
@@ -51,9 +44,9 @@ export const SkillTest = ({ onTestComplete, onClose, topic }: SkillTestProps) =>
     }
   };
 
-  const calculateResult = (answers: number[]) => {
+  const calculateResult = (answers) => {
     let score = 0;
-    const topicCounts: { [key: string]: number } = {};
+    const topicCounts = {};
     
     selectedQuestions.forEach((question, index) => {
       if (answers[index] === question.correctAnswer) {
@@ -66,12 +59,12 @@ export const SkillTest = ({ onTestComplete, onClose, topic }: SkillTestProps) =>
       (a, b) => topicCounts[b] - topicCounts[a]
     ).slice(0, 3);
 
-    let recommendedLevel: 'beginner' | 'intermediate' | 'expert';
+    let recommendedLevel;
     if (score <= 2) recommendedLevel = 'beginner';
     else if (score <= 4) recommendedLevel = 'intermediate';
     else recommendedLevel = 'expert';
 
-    const result: TestResult = {
+    const result = {
       score,
       totalQuestions: selectedQuestions.length,
       recommendedLevel,
