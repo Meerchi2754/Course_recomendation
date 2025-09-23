@@ -78,61 +78,64 @@ export const SkillTest = ({ onTestComplete, onClose, topic }) => {
   const progress = ((currentQuestion + 1) / selectedQuestions.length) * 100;
 
   if (showResult) {
-    return (
-      <Card className="w-full max-w-2xl mx-auto">
-        <CardHeader className="text-center">
-          <CardTitle className="flex items-center justify-center gap-2 text-2xl">
-            <Award className="w-6 h-6 text-primary" />
-            Test Complete!
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-6 text-center">
-          <div className="text-6xl font-bold text-primary">
+  return (
+    <Card className="w-full max-w-2xl mx-auto glass shadow-colored scale-in">
+      <CardHeader className="text-center pb-4">
+        <CardTitle className="flex items-center justify-center gap-3 text-3xl text-gradient-primary">
+          <Award className="w-8 h-8" />
+          Test Complete!
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-8 text-center">
+        <div className="relative">
+          <div className="text-8xl font-bold text-gradient-primary animate-pulse">
             {selectedAnswers.filter((answer, index) => answer === selectedQuestions[index].correctAnswer).length}/{selectedQuestions.length}
           </div>
-          <p className="text-lg text-muted-foreground">
-            Based on your results, we recommend starting with <strong>{selectedAnswers.filter((answer, index) => answer === selectedQuestions[index].correctAnswer).length <= 2 ? 'beginner' : selectedAnswers.filter((answer, index) => answer === selectedQuestions[index].correctAnswer).length <= 4 ? 'intermediate' : 'expert'}</strong> level courses.
-          </p>
-          <div className="flex gap-4 justify-center">
-            <Button onClick={onClose} variant="outline">
-              Back to Search
-            </Button>
-            <Button onClick={() => {
-              onClose();
-              // You can add logic here to auto-fill the search with recommended topics
-            }}>
-              Find Courses
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
-    );
+          <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-accent/20 rounded-full blur-3xl -z-10"></div>
+        </div>
+        <p className="text-lg text-muted-foreground leading-relaxed">
+          Based on your results, we recommend starting with <strong className="text-gradient-accent">{selectedAnswers.filter((answer, index) => answer === selectedQuestions[index].correctAnswer).length <= 2 ? 'beginner' : selectedAnswers.filter((answer, index) => answer === selectedQuestions[index].correctAnswer).length <= 4 ? 'intermediate' : 'expert'}</strong> level courses.
+        </p>
+        <div className="flex gap-4 justify-center">
+          <Button onClick={onClose} variant="outline" className="btn-hover-lift">
+            Back to Search
+          </Button>
+          <Button onClick={() => {
+            onClose();
+            // You can add logic here to auto-fill the search with recommended topics
+          }} className="btn-hover-lift shadow-colored">
+            Find Courses
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
+  );
   }
 
   return (
-    <Card className="w-full max-w-2xl mx-auto">
-      <CardHeader>
+    <Card className="w-full max-w-2xl mx-auto glass shadow-elegant fade-in">
+      <CardHeader className="border-b border-border/50">
         <div className="flex items-center justify-between mb-4">
-          <CardTitle className="flex items-center gap-2">
-            <BookOpen className="w-5 h-5" />
+          <CardTitle className="flex items-center gap-3 text-gradient-primary">
+            <BookOpen className="w-6 h-6" />
             Skill Assessment Test
           </CardTitle>
-          <span className="text-sm text-muted-foreground">
+          <span className="text-sm text-muted-foreground bg-muted/50 px-3 py-1 rounded-full">
             Question {currentQuestion + 1} of {selectedQuestions.length}
           </span>
         </div>
-        <Progress value={progress} className="w-full" />
+        <Progress value={progress} className="w-full h-2 shadow-sm" />
       </CardHeader>
-      <CardContent className="space-y-6">
+      <CardContent className="space-y-8 pt-6">
         <div>
-          <h3 className="text-lg font-semibold mb-4">
+          <h3 className="text-xl font-bold mb-6 text-gradient-accent leading-relaxed">
             {selectedQuestions[currentQuestion].question}
           </h3>
-          <RadioGroup value={selectedAnswer} onValueChange={setSelectedAnswer}>
+          <RadioGroup value={selectedAnswer} onValueChange={setSelectedAnswer} className="space-y-4">
             {selectedQuestions[currentQuestion].options.map((option, index) => (
-              <div key={index} className="flex items-center space-x-2">
-                <RadioGroupItem value={index.toString()} id={`option-${index}`} />
-                <Label htmlFor={`option-${index}`} className="cursor-pointer">
+              <div key={index} className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted/50 transition-colors duration-200 border border-transparent hover:border-primary/20">
+                <RadioGroupItem value={index.toString()} id={`option-${index}`} className="shadow-sm" />
+                <Label htmlFor={`option-${index}`} className="cursor-pointer flex-1 text-sm font-medium">
                   {option}
                 </Label>
               </div>
@@ -140,13 +143,14 @@ export const SkillTest = ({ onTestComplete, onClose, topic }) => {
           </RadioGroup>
         </div>
         
-        <div className="flex gap-4 justify-end">
-          <Button variant="outline" onClick={onClose}>
+        <div className="flex gap-4 justify-end pt-4 border-t border-border/50">
+          <Button variant="outline" onClick={onClose} className="btn-hover-lift">
             Cancel
           </Button>
           <Button 
             onClick={handleNextQuestion}
             disabled={selectedAnswer === ""}
+            className="btn-hover-lift shadow-colored"
           >
             {currentQuestion === selectedQuestions.length - 1 ? "Finish Test" : "Next Question"}
           </Button>

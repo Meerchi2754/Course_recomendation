@@ -4,33 +4,48 @@ import { Button } from "@/components/ui/button";
 import { Star, Clock, ExternalLink } from "lucide-react";
 
 export function CourseCard({ course }) {
+  const getLevelVariant = (level) => {
+    switch (level) {
+      case 'beginner':
+        return 'success';
+      case 'intermediate':
+        return 'warning';
+      case 'expert':
+        return 'destructive';
+      default:
+        return 'secondary';
+    }
+  };
+
   const getLevelColor = (level) => {
     switch (level) {
       case 'beginner':
-        return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200';
+        return 'text-success';
       case 'intermediate':
-        return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200';
+        return 'text-warning';
       case 'expert':
-        return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200';
+        return 'text-destructive';
       default:
-        return 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200';
+        return 'text-muted-foreground';
     }
   };
 
   return (
-    <Card className="h-full hover:shadow-lg transition-shadow duration-200">
+    <Card className="h-full card-hover shadow-elegant glass group cursor-pointer fade-in">
       <CardHeader>
         <div className="flex justify-between items-start gap-2">
-          <CardTitle className="text-lg leading-tight">{course.title}</CardTitle>
-          <Badge className={getLevelColor(course.level)}>
+          <CardTitle className="text-lg leading-tight group-hover:text-gradient-primary transition-all duration-300">
+            {course.title}
+          </CardTitle>
+          <Badge variant={getLevelVariant(course.level)} className="shadow-md">
             {course.level}
           </Badge>
         </div>
         <div className="flex items-center gap-4 text-sm text-muted-foreground">
-          <span className="font-medium">{course.provider}</span>
+          <span className="font-medium gradient-primary bg-clip-text text-transparent">{course.provider}</span>
           <div className="flex items-center gap-1">
-            <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-            <span>{course.rating}</span>
+            <Star className="w-4 h-4 fill-warning text-warning" />
+            <span className="font-semibold">{course.rating}</span>
           </div>
         </div>
       </CardHeader>
@@ -40,9 +55,9 @@ export function CourseCard({ course }) {
           {course.description}
         </p>
         
-        <div className="flex flex-wrap gap-1">
+        <div className="flex flex-wrap gap-2">
           {course.skills.map((skill) => (
-            <Badge key={skill} variant="outline" className="text-xs">
+            <Badge key={skill} variant="outline" className="text-xs hover:bg-primary/10 transition-colors duration-200">
               {skill}
             </Badge>
           ))}
@@ -53,18 +68,18 @@ export function CourseCard({ course }) {
             <Clock className="w-4 h-4" />
             <span>{course.duration}</span>
           </div>
-          <div className="font-semibold text-primary">
+          <div className="font-bold text-gradient-primary text-lg">
             {course.price}
           </div>
         </div>
         
         <Button 
           asChild 
-          className="w-full"
-          variant="outline"
+          className="w-full btn-hover-lift shadow-md group"
+          variant="default"
         >
           <a href={course.url} target="_blank" rel="noopener noreferrer">
-            <ExternalLink className="w-4 h-4 mr-2" />
+            <ExternalLink className="w-4 h-4 mr-2 group-hover:rotate-12 transition-transform duration-300" />
             View Course
           </a>
         </Button>
